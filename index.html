@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB EVRNIGHT</title>
+    <style>
+        /* ===== CẤU HÌNH BIẾN CHẾ ĐỘ SÁNG / TỐI ===== */
+:root {
+    --bg-body: #0f172a;
+    --bg-card: #1e293b;
+    --bg-inner: #0f172a;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --border-color: #334155;
+    --accent-color: #38bdf8;
+    --btn-bg: #334155;
+    --btn-hover: #475569;
+    --scrollbar-track: #1e293b;
+    --scrollbar-thumb: #334155;
+}
+
+body.light-theme {
+    --bg-body: #f1f5f9;
+    --bg-card: #ffffff;
+    --bg-inner: #f8fafc;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --border-color: #cbd5e1;
+    --accent-color: #0284c7;
+    --btn-bg: #e2e8f0;
+    --btn-hover: #cbd5e1;
+    --scrollbar-track: #e2e8f0;
+    --scrollbar-thumb: #94a3b8;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* 1. HEADER */
+header {
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+nav {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab-btn:hover {
+    color: var(--text-primary);
+    background-color: var(--btn-bg);
+}
+
+.tab-btn.active {
+    color: #0f172a;
+    background-color: var(--accent-color);
+}
+
+/* Nút chuyển đổi giao diện Sáng / Tối */
+.theme-toggle-btn {
+    background-color: var(--btn-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: all 0.2s;
+}
+
+.theme-toggle-btn:hover {
+    background-color: var(--btn-hover);
+}
+
+/* 2. PHẦN THÂN (MAIN) */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px 10px;
+}
+
+.container {
+    width: 100%;
+    max-width: 100%;
+    background-color: var(--bg-card);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color);
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.sub-desc {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+/* KHUNG THANH CUỘN CHO TRUYỆN VÀ NHẠC */
+.scroll-grid-container {
+    max-height: 520px;
+    overflow-y: auto;
+    padding-right: 8px;
+    margin-top: 20px;
+}
+
+.scroll-grid-container::-webkit-scrollbar,
+.episodes-scroll-box::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scroll-grid-container::-webkit-scrollbar-track,
+.episodes-scroll-box::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    border-radius: 4px;
+}
+
+.scroll-grid-container::-webkit-scrollbar-thumb,
+.episodes-scroll-box::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 4px;
+}
+
+.scroll-grid-container::-webkit-scrollbar-thumb:hover,
+.episodes-scroll-box::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}
+
+/* Style Grid Card */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.item-card {
+    background-color: var(--bg-inner);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.item-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-color);
+}
+
+.item-img-box {
+    width: 100%;
+    height: 220px;
+    background-color: var(--bg-card);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.item-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.item-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.item-price {
+    font-weight: bold;
+    color: #ef4444;
+    margin-bottom: 12px;
+}
+
+.btn-play-audio, .btn-buy, .comic-btn-detail {
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 8px;
+    color: white;
+    transition: background 0.2s;
+}
+
+.btn-play-audio, .comic-btn-detail { background-color: #0284c7; }
+.btn-play-audio:hover, .comic-btn-detail:hover { background-color: #0369a1; }
+.btn-buy { background-color: #16a34a; }
+.btn-buy:hover { background-color: #15803d; }
+
+.now-playing-bar {
+    background-color: var(--bg-inner);
+    border: 1px solid var(--accent-color);
+    border-radius: 12px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.now-playing-info {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+#hiddenAudioPlayer {
+    height: 35px;
+    outline: none;
+}
+
+/* Style Tab Xem Anime */
+.anime-series-container {
+    background-color: var(--bg-inner);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.anime-main-poster {
+    width: 140px;
+    height: 200px;
+    border-radius: 8px;
+    object-fit: cover;
+    background-color: var(--bg-card);
+    flex-shrink: 0;
+    border: 1px solid var(--border-color);
+}
+
+.anime-episodes-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.anime-series-title {
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.episodes-scroll-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 180px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.episode-row {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.episode-row:hover {
+    border-color: var(--accent-color);
+}
+
+.episode-title {
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.episode-title:hover {
+    color: var(--accent-color);
+}
+
+/* Style Tab Góp Ý */
+.feedback-form {
+    background-color: var(--bg-inner);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 25px;
+}
+
+.form-control {
+    margin-bottom: 15px;
+}
+
+.form-control label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+}
+
+.form-control input, .form-control textarea, .form-control select {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 8px;
+    outline: none;
+}
+
+.form-control input:focus, .form-control textarea:focus, .form-control select:focus {
+    border-color: var(--accent-color);
+}
+
+.btn-submit-fb {
+    background-color: var(--accent-color);
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.section-subtitle {
+    color: var(--accent-color);
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+}
+
+.feedback-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.feedback-item {
+    background-color: var(--bg-inner);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.feedback-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.feedback-stars {
+    color: #facc15;
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+}
+
+.feedback-body {
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Style Giỏ hàng & Modal */
+.cart-section {
+    background-color: var(--bg-inner);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.cart-section h3 {
+    color: var(--accent-color);
+    margin-bottom: 15px;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.cart-table th, .cart-table td {
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cart-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.cart-total {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ef4444;
+}
+
+.btn-checkout {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.qty-btn {
+    background: var(--btn-bg);
+    color: var(--text-primary);
+    border: none;
+    padding: 2px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.del-cart-btn {
+    color: #ef4444;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal-box {
+    background-color: var(--bg-card);
+    width: 90%;
+    max-width: 500px;
+    border-radius: 12px;
+    padding: 25px;
+    border: 1px solid var(--border-color);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.modal-header h3 { color: var(--accent-color); }
+
+.close-modal-btn {
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-total {
+    margin: 15px 0;
+    font-weight: bold;
+    color: #ef4444;
+    font-size: 1.1rem;
+}
+
+.btn-confirm-pay {
+    width: 100%;
+    background-color: #16a34a;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Tab Thông Tin */
+.info-wrapper {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.info-card {
+    background-color: var(--bg-inner);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.info-card h3 {
+    color: var(--accent-color);
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.info-card ul {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.highlight-text {
+    color: var(--accent-color);
+}
+
+/* 3. FOOTER */
+footer {
+    background-color: var(--bg-card);
+    border-top: 1px solid var(--border-color);
+    padding: 20px 30px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.footer-links {
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.footer-links a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="logo">Evernight</div>
+        <nav>
+            <button class="tab-btn active" onclick="openTab(event, 'tab1')">📚 Mua Sắm</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab2')">🎬 Xem Phim</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab3')">🎵 Nghe Nhạc</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab6')">🛒 Giỏ Hàng</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab4')">💬 Góp Ý</button>
+            <button class="tab-btn" onclick="openTab(event, 'tabInfo')">ℹ️ Thông Tin & Chính Sách</button>
+            <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">🌙 Tối</button>
+        </nav>
+    </header>
+
+    <!-- ===== PHẦN THÂN (MAIN CONTENT) ===== -->
+    <main>
+        <div class="container">
+            
+            <!-- TAB 1: MUA SẮM TRUYỆN (CÓ THANH CUỘN DỌC) -->
+            <div id="tab1" class="tab-content active">
+                <h2>📚 Danh Sách Truyện Tranh</h2>
+                <div class="scroll-grid-container">
+                    <div class="card-grid">
+                        <div class="item-card">
+                            <div>
+                                <div class="item-img-box"><img src="https://res.cloudinary.com/fmyo1vjy/image/upload/v1792917712/2024_06_08_10_37_33_1-390x510.webp" alt="Doraemon"></div>
+                                <div class="item-title">Doraemon - Tập 1</div>
+                                <div class="item-price">25,000 VNĐ</div>
+                            </div>
+                            <div>
+                                <button class="btn-buy" onclick="addToCart('Doraemon - Tập 1', 25000)">🛒 Mua Ngay</button>
+                                <button class="comic-btn-detail" onclick="alert('Xem chi tiết: Doraemon - Tập 1')">Xem chi tiết</button>
+                            </div>
+                        </div>
+
+                        <div class="item-card">
+                            <div>
+                                <div class="item-img-box"><img src="https://res.cloudinary.com/fmyo1vjy/image/upload/v1792918229/sg-11134201-22110-ncd1ipv9uhjvd0.jpg" alt="Conan"></div>
+                                <div class="item-title">Conan - Tập 100</div>
+                                <div class="item-price">30,000 VNĐ</div>
+                            </div>
+                            <div>
+                                <button class="btn-buy" onclick="addToCart('Conan - Tập 100', 30000)">🛒 Mua Ngay</button>
+                                <button class="comic-btn-detail" onclick="alert('Xem chi tiết: Conan - Tập 100')">Xem chi tiết</button>
+                            </div>
+                        </div>
+
+                        <div class="item-card">
+                            <div>
+                                <div class="item-img-box"><img src="https://res.cloudinary.com/fmyo1vjy/image/upload/v1792918296/f4b15ec04e6111f2b8f1ec3cf163b330.webp" alt="One Piece"></div>
+                                <div class="item-title">One Piece - Tập 105</div>
+                                <div class="item-price">35,000 VNĐ</div>
+                            </div>
+                            <div>
+                                <button class="btn-buy" onclick="addToCart('One Piece - Tập 105', 35000)">🛒 Mua Ngay</button>
+                                <button class="comic-btn-detail" onclick="alert('Xem chi tiết: One Piece - Tập 105')">Xem chi tiết</button>
+                            </div>
+                        </div>
+
+                        <div class="item-card">
+                            <div>
+                                <div class="item-img-box"><img src="https://res.cloudinary.com/fmyo1vjy/image/upload/v1792918715/65eae54ce88c25.14643849.webp" alt="Dragon Ball"></div>
+                                <div class="item-title">Dragon Ball - Tập 1</div>
+                                <div class="item-price">35,000 VNĐ</div>
+                            </div>
+                            <div>
+                                <button class="btn-buy" onclick="addToCart('Dragon Ball - Tập 1', 35000)">🛒 Mua Ngay</button>
+                                <button class="comic-btn-detail" onclick="alert('Xem chi tiết: Dragon Ball - Tập 1')">Xem chi tiết</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: XEM PHIM -->
+            <div id="tab2" class="tab-content">
+                <h2>🎬 Danh Sách Anime</h2>
+                <p class="sub-desc">Chọn tập phim ở khung bên phải và cuộn xuống để xem thêm các tập khác.</p>
+
+                <div class="anime-series-container">
+                    <img src="https://m.media-amazon.com/images/S/pv-target-images/0b0e1d5191f05e51e012a7dfc017474bc2073030284eb2c686c8bf86008a1506.jpg" alt="Poster Bộ Phim" class="anime-main-poster">
+                    
+                    <div class="anime-episodes-wrapper">
+                        <div class="anime-series-title">《ONIMAI: I’m Now Your Sister!》</div>
+                        
+                        <div class="episodes-scroll-box">
+                            <div class="episode-row">
+                                <a href="https://www.youtube.com/watch?v=WROXvHsOwWM" target="_blank" rel="noopener noreferrer" class="episode-title">
+                                    ▶ Tập 1: Mahiro và Cơ Thể Mới (Vietsub)
+                                </a>
+                            </div>
+                            <div class="episode-row">
+                                <a href="https://www.youtube.com/watch?v=w4W4FPZ8TkM" target="_blank" rel="noopener noreferrer" class="episode-title">
+                                    ▶ Tập 2: Những Ngày Đầu Đến Trường (Vietsub)
+                                </a>
+                            </div>
+                            <div class="episode-row">
+                                <a href="https://www.youtube.com/watch?v=JSgeptd3hwI" target="_blank" rel="noopener noreferrer" class="episode-title">
+                                    ▶ Tập 3: Người Bạn Mới (Vietsub)
+                                </a>
+                            </div>
+                            <div class="episode-row">
+                                <a href="https://www.youtube.com/watch?v=R7rB2XEzjaM" target="_blank" rel="noopener noreferrer" class="episode-title">
+                                    ▶ Tập 4: Mua Sắm Cùng Mihari (Vietsub)
+                                </a>
+                            </div>
+                            <div class="episode-row">
+                                <a href="https://www.youtube.com/watch?v=htTzSxVsQgw" target="_blank" rel="noopener noreferrer" class="episode-title">
+                                    ▶ Tập 5: Chị Em Gái Đột Nhập (Vietsub)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="anime-series-container">
+                    <img src="https://ramenparados.com/wp-content/uploads/2026/04/goblin1.jpg" alt="Poster Bộ Phim" class="anime-main-poster">
+                    
+                    <div class="anime-episodes-wrapper">
+                        <div class="anime-series-title">《Le manga Tensei Goblin Dakedo Shitsumon Aru?》</div>
+                        
+                        <div class="episodes-scroll-box">
+                            <div class="episode-row">
+                                <a href="https://www.youtube.com/watch?v=P2hfW_eHh7A" target="_blank" rel="noopener noreferrer" class="episode-title">
+                                    ▶《Chuyển sinh thành Goblin đấy, có sao không?⟫ Tập 1 - Vietsub
+                                </a>
+                            </div>
+                            <div class="episode-row">
+                                <a href="https://www.youtube.com/watch?v=MbH6DWD_9y8" target="_blank" rel="noopener noreferrer" class="episode-title">
+                                    ▶《Chuyển sinh thành Goblin đấy, có sao không?⟫ Tập 2 - Vietsub
+                                </a>
+                            </div>
+                            <div class="episode-row">
+                                <a href="https://www.youtube.com/watch?v=Vrnc1capeWM" target="_blank" rel="noopener noreferrer" class="episode-title">
+                                    ▶《Chuyển sinh thành Goblin đấy, có sao không?⟫ Tập 3 - Vietsub
+                                </a>
+                            </div>
+                            <div class="episode-row">
+                                <a href="https://www.youtube.com/watch?v=T7dwNBYyOic" target="_blank" rel="noopener noreferrer" class="episode-title">
+                                    ▶《Chuyển sinh thành Goblin đấy, có sao không?⟫ Tập 4 - Vietsub
+                                </a>
+                            </div>
+                            <div class="episode-row">
+                                <a href="https://www.youtube.com/watch?v=Bn1-6Lpik9o" target="_blank" rel="noopener noreferrer" class="episode-title">
+                                    ▶《Chuyển sinh thành Goblin đấy, có sao không?⟫ Tập 5 - Vietsub
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: NGHE NHẠC (CÓ THANH CUỘN DỌC) -->
+            <div id="tab3" class="tab-content">
+                <h2>🎵 Thư Viện Âm Nhạc</h2>
+                <div class="now-playing-bar">
+                    <div class="now-playing-info">
+                        <span>🔊 Đang phát: </span>
+                        <span id="currentSongTitle">Chưa chọn bài hát</span>
+                    </div>
+                    <audio id="hiddenAudioPlayer" controls></audio>
+                </div>
+                <div class="scroll-grid-container">
+                    <div class="card-grid">
+                        <div class="item-card">
+                            <div>
+                                <div class="item-img-box"><img src="https://i.ytimg.com/vi/qjBa6SBV1sI/maxresdefault.jpg" alt="Như Một Người Rừng"></div>
+                                <div class="item-title">Như Một Người Dưng</div>
+                            </div>
+                            <button class="btn-play-audio" onclick="playAudioTrack('https://res.cloudinary.com/fmyo1vjy/video/upload/v1793787494/Nh%C6%B0_M%E1%BB%99t_Ng%C6%B0%E1%BB%9Di_R%C6%B0ng_1.mp3', 'Như Một Người Rừng')">▶ Phát Nhạc</button>
+                        </div>
+                        <div class="item-card">
+                            <div>
+                                <div class="item-img-box"><img src="https://tse2.mm.bing.net/th/id/OIP.ilN8amQPfKPB7k1anpiTiQHaEK?r=0&pid=Api&h=220&P=0" alt="Remix"></div>
+                                <div class="item-title">Thương Nhau Đến Thế</div>
+                            </div>
+                            <button class="btn-play-audio" onclick="playAudioTrack('https://res.cloudinary.com/fmyo1vjy/video/upload/v1793791283/Th%C6%B0%C6%A1ng_Nhau_%C4%90%E1%BA%BFn_Th%E1%BA%BF_ZZ_Remix.mp3', 'Thương Nhau Đến Thế')">▶ Phát Nhạc</button>
+                        </div>
+                        <div class="item-card">
+                            <div>
+                                <div class="item-img-box"><img src="https://tse1.mm.bing.net/th/id/OIP.2llYwQWElRnqowamnVC7ygHaHa?r=0&pid=Api&h=220&P=0" alt="Remix"></div>
+                                <div class="item-title">Bạc Phận</div>
+                            </div>
+                            <button class="btn-play-audio" onclick="playAudioTrack('https://res.cloudinary.com/fmyo1vjy/video/upload/v1793797192/B%E1%BA%A1c_Ph%E1%BA%ADn_Remix.mp3', 'Bạc Phận')">▶ Phát Nhạc</button>
+                        </div>
+                        <div class="item-card">
+                            <div>
+                                <div class="item-img-box"><img src="https://tse1.mm.bing.net/th/id/OIP.IXFyq7zQ3xuVb1Vi4bI0qQHaHa?r=0&pid=Api&h=220&P=0" alt="Remix"></div>
+                                <div class="item-title">Lạc Trôi</div>
+                            </div>
+                            <button class="btn-play-audio" onclick="playAudioTrack('https://res.cloudinary.com/fmyo1vjy/video/upload/v1793796982/L%E1%BA%A1c_Tr%C3%B4i_Remix.mp3', 'Lạc Trôi')">▶ Phát Nhạc</button>
+                        </div>
+                        <div class="item-card">
+                            <div>
+                                <div class="item-img-box"><img src="https://tse1.mm.bing.net/th/id/OIP.RLz1JJoNZDLpZOjMioTBbwHaEK?r=0&pid=Api&h=220&P=0" alt="Remix"></div>
+                                <div class="item-title">Tránh Duyên</div>
+                            </div>
+                            <button class="btn-play-audio" onclick="playAudioTrack('https://res.cloudinary.com/fmyo1vjy/video/upload/v1793797198/Tr%C3%A1nh_Duy%C3%AAn_Remix.mp3', 'Lạc Trôi')">▶ Phát Nhạc</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 6: GIỎ HÀNG -->
+            <div id="tab6" class="tab-content">
+                <div class="cart-section">
+                    <h3>🛒 Giỏ Hàng Của Bạn</h3>
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th>Tên Truyện</th>
+                                <th>Đơn Giá</th>
+                                <th>Số Lượng</th>
+                                <th>Thành Tiền</th>
+                                <th>Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cartItems"></tbody>
+                    </table>
+                    <div class="cart-footer">
+                        <div class="cart-total">Tổng thanh toán: <span id="cartTotal">0</span> VNĐ</div>
+                        <button class="btn-checkout" onclick="openCheckoutModal()">💳 Tiến Hành Thanh Toán</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: GÓP Ý & ĐÁNH GIÁ -->
+            <div id="tab4" class="tab-content">
+                <h2>💬 Góp Ý & Đánh Giá Website</h2>
+                <p class="sub-desc">Hãy để lại nhận xét hoặc ý kiến đóng góp của bạn để chúng tôi cải thiện tốt hơn!</p>
+                
+                <div class="feedback-form">
+                    <form onsubmit="submitFeedback(event)">
+                        <div class="form-control">
+                            <label>Họ và tên của bạn</label>
+                            <input type="text" id="fbName" required placeholder="Nhập tên của bạn...">
+                        </div>
+                        <div class="form-control">
+                            <label>Đánh giá chung</label>
+                            <select id="fbRating">
+                                <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐ (Tuyệt vời)</option>
+                                <option value="⭐⭐⭐⭐">⭐⭐⭐⭐ (Rất tốt)</option>
+                                <option value="⭐⭐⭐">⭐⭐⭐ (Bình thường)</option>
+                                <option value="⭐⭐">⭐⭐ (Cần cải thiện)</option>
+                                <option value="⭐">⭐ (Kém)</option>
+                            </select>
+                        </div>
+                        <div class="form-control">
+                            <label>Nội dung góp ý</label>
+                            <textarea id="fbContent" rows="3" required placeholder="Nhập ý kiến của bạn vào đây..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit-fb">Gửi Góp Ý</button>
+                    </form>
+                </div>
+
+                <h3 class="section-subtitle">Đánh giá từ người dùng:</h3>
+                <div class="feedback-list" id="feedbackList"></div>
+            </div>
+
+            <!-- TAB: THÔNG TIN & CHÍNH SÁCH -->
+            <div id="tabInfo" class="tab-content">
+                <h2>ℹ️ Thông Tin & Chính Sách</h2>
+                <div class="info-wrapper">
+                    <div class="info-card">
+                        <h3>🏢 Về Evernight</h3>
+                        <p>Evernight là nền tảng giải trí và mua sắm trực tuyến đa năng tích hợp nhiều tiện ích như nghe nhạc, xem phim, đọc truyện tranh và mua sắm sản phẩm trực tiếp. Chúng tôi mang đến trải nghiệm mượt mà, giao diện tối ưu chuẩn hiện đại.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>📦 Chính Sách Đổi Trả & Hoàn Tiền</h3>
+                        <ul>
+                            <li>Hỗ trợ đổi trả sản phẩm trong vòng 7 ngày kể từ khi nhận hàng nếu có lỗi phát sinh từ nhà sản xuất hoặc vận chuyển.</li>
+                            <li>Sản phẩm đổi trả phải còn nguyên vẹn, chưa qua sử dụng và đầy đủ bao bì.</li>
+                        </ul>
+                    </div>
+                    <div class="info-card">
+                        <h3>🔒 Chính Sách Bảo Mật Thông Tin</h3>
+                        <p>Mọi thông tin cá nhân quý khách cung cấp khi thanh toán đơn hàng đều được cam kết bảo mật tuyệt đối, chỉ sử dụng cho mục đích giao hàng và chăm sóc khách hàng.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>📞 Hỗ Trợ Khách Hàng</h3>
+                        <p>Mọi thắc mắc hoặc cần hỗ trợ nhanh, quý khách vui lòng liên hệ:</p>
+                        <p class="highlight-text">• Hotline: 1900 xxxx (8:00 - 21:00 hàng ngày)</p>
+                        <p class="highlight-text">• Email hỗ trợ: support@Evernight.vn</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ===== MODAL THANH TOÁN ===== -->
+    <div id="checkoutModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>💳 Thông Tin Thanh Toán</h3>
+                <span class="close-modal-btn" onclick="closeCheckoutModal()">&times;</span>
+            </div>
+            <form onsubmit="submitPayment(event)">
+                <div class="form-control"><label>Họ và Tên</label><input type="text" id="custName" required placeholder="Nguyễn Văn A"></div>
+                <div class="form-control"><label>Số Điện Thoại</label><input type="tel" id="custPhone" required placeholder="0912345678"></div>
+                <div class="form-control"><label>Địa Chỉ</label><input type="text" id="custAddress" required placeholder="Số nhà, tên đường..."></div>
+                <div class="modal-total">Tổng: <span id="modalTotal">0</span> VNĐ</div>
+                <button type="submit" class="btn-confirm-pay">✅ Xác Nhận Đặt Hàng</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <p>Web tham khảo</p>
+        <div class="footer-links">
+            <a href="#">Trang chủ</a> • 
+            <a href="#">Giới thiệu</a> • 
+            <a href="#">Liên hệ</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- CHUYỂN ĐỔI TAB ---
+function openTab(evt, tabId) {
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    evt.currentTarget.classList.add('active');
+}
+
+// --- BẬT / TẮT CHẾ ĐỘ SÁNG TỐI ---
+function toggleTheme() {
+    const isLight = document.body.classList.toggle('light-theme');
+    const themeBtn = document.getElementById('themeBtn');
+    if (isLight) {
+        themeBtn.innerText = '☀️ Sáng';
+        localStorage.setItem('my_theme', 'light');
+    } else {
+        themeBtn.innerText = '🌙 Tối';
+        localStorage.setItem('my_theme', 'dark');
+    }
+}
+
+// Kiểm tra chế độ đã lưu
+if (localStorage.getItem('my_theme') === 'light') {
+    document.body.classList.add('light-theme');
+    document.getElementById('themeBtn').innerText = '☀️ Sáng';
+}
+
+// --- GÓP Ý & LƯU LOCALSTORAGE ---
+let feedbacks = JSON.parse(localStorage.getItem('my_feedbacks')) || [
+    { name: "Minh Tuấn", rating: "⭐⭐⭐⭐⭐", content: "Website mượt mà, giao diện rất đẹp!", date: "04/11/2026" }
+];
+
+function renderFeedbacks() {
+    const listEl = document.getElementById('feedbackList');
+    listEl.innerHTML = '';
+    feedbacks.forEach(fb => {
+        const item = document.createElement('div');
+        item.className = 'feedback-item';
+        item.innerHTML = `
+            <div class="feedback-header">
+                <span>👤 ${fb.name}</span>
+                <span style="font-size: 0.8rem; opacity: 0.8;">${fb.date}</span>
+            </div>
+            <div class="feedback-stars">${fb.rating}</div>
+            <div class="feedback-body">${fb.content}</div>
+        `;
+        listEl.appendChild(item);
+    });
+}
+
+function submitFeedback(event) {
+    event.preventDefault();
+    const name = document.getElementById('fbName').value;
+    const rating = document.getElementById('fbRating').value;
+    const content = document.getElementById('fbContent').value;
+    const date = new Date().toLocaleDateString('vi-VN');
+
+    feedbacks.unshift({ name, rating, content, date });
+    localStorage.setItem('my_feedbacks', JSON.stringify(feedbacks));
+    
+    renderFeedbacks();
+    document.getElementById('fbName').value = '';
+    document.getElementById('fbContent').value = '';
+    alert('Cảm ơn bạn đã gửi góp ý!');
+}
+
+renderFeedbacks();
+
+// --- PHÁT NHẠC MP3 ---
+function playAudioTrack(audioUrl, title) {
+    const player = document.getElementById('hiddenAudioPlayer');
+    document.getElementById('currentSongTitle').innerText = title;
+    player.src = audioUrl;
+    player.load();
+    player.play();
+}
+
+// --- QUẢN LÝ GIỎ HÀNG & THANH TOÁN ---
+let cart = [];
+let currentTotal = 0;
+
+function addToCart(title, price) {
+    const existing = cart.find(i => i.title === title);
+    if (existing) existing.qty += 1; 
+    else cart.push({ title, price, qty: 1 });
+    renderCart();
+    alert(`Đã thêm "${title}" vào giỏ hàng!`);
+}
+
+function updateQty(index, delta) {
+    cart[index].qty += delta;
+    if (cart[index].qty <= 0) cart.splice(index, 1);
+    renderCart();
+}
+
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    renderCart();
+}
+
+function renderCart() {
+    const body = document.getElementById('cartItems');
+    body.innerHTML = ''; 
+    currentTotal = 0;
+    if (cart.length === 0) {
+        body.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-secondary);">Giỏ hàng đang trống</td></tr>';
+    } else {
+        cart.forEach((item, index) => {
+            const itemTotal = item.price * item.qty;
+            currentTotal += itemTotal;
+            body.innerHTML += `<tr>
+                <td>${item.title}</td>
+                <td>${item.price.toLocaleString('vi-VN')}đ</td>
+                <td>
+                    <button class="qty-btn" onclick="updateQty(${index}, -1)">-</button> 
+                    ${item.qty} 
+                    <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
+                </td>
+                <td>${itemTotal.toLocaleString('vi-VN')}đ</td>
+                <td><span class="del-cart-btn" onclick="removeFromCart(${index})">✕</span></td>
+            </tr>`;
+        });
+    }
+    document.getElementById('cartTotal').innerText = currentTotal.toLocaleString('vi-VN');
+}
+
+function openCheckoutModal() {
+    if (cart.length === 0) { 
+        alert('Giỏ hàng của bạn đang trống!'); 
+        return; 
+    }
+    document.getElementById('modalTotal').innerText = currentTotal.toLocaleString('vi-VN');
+    document.getElementById('checkoutModal').classList.add('active');
+}
+
+function closeCheckoutModal() { 
+    document.getElementById('checkoutModal').classList.remove('active'); 
+}
+
+function submitPayment(e) {
+    e.preventDefault();
+    const name = document.getElementById('custName').value;
+    alert(`🎉 Đặt hàng thành công!\nCảm ơn bạn ${name}.\nTổng tiền: ${currentTotal.toLocaleString('vi-VN')} VNĐ`);
+    cart = []; 
+    renderCart(); 
+    closeCheckoutModal();
+}
+
+renderCart();
+    </script>
+</body>
+</html>
